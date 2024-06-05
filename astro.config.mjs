@@ -15,6 +15,8 @@ export default defineConfig({
 					items: [
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Introducing Kubernetes operators', link: '/chapters/ch1/' },
+						{ label: 'Getting to know operators', link: '/chapters/ch2/' },
+						{ label: 'Spinning up your operator', link: '/chapters/ch3/' },
 					],
 				},
 				{
