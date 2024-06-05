@@ -87,7 +87,7 @@ In Listing 2.1 is a sample 3scale ApiManger CR, which only has the basic setup f
 
 
 #### Listing 2.1 Sample APIManager CR
-
+```
     $ cat 3scale_CR.yaml
     ---
     apiVersion: apps.3scale.net/v1alpha1
@@ -103,7 +103,7 @@ In Listing 2.1 is a sample 3scale ApiManger CR, which only has the basic setup f
               name: secretname
       wildcardDomain: some.domain.com 
     EOF
-
+```
 With this information, the 3scale Operator will trigger and create deployment configurations. These, in turn, will create Pods, secrets, config maps, deployments, services, routes, and persistent volumes for the databases, as shown at a high level in Figure 2.4. Finally, it makes sure all these components can communicate with each other.
 
 
