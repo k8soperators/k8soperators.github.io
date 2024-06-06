@@ -8,6 +8,13 @@ import figure1_2 from '../../../assets/ch2/gitopscr.png'
 import figure1_3 from '../../../assets/ch2/crds.png'
 import figure1_4 from '../../../assets/ch2/crd2.png'
 import figure1_5 from '../../../assets/ch2/op.png'
+import figure2_1 from '../../../assets/ch2/opeator_pattern.png'    
+import figure2_2 from '../../../assets/ch2/database_creation_flow.png'    
+import figure2_3 from '../../../assets/ch2/observability_cr_created.png'
+import figure2_4 from '../../../assets/ch2/3scale_operator.png'
+import figure2_5 from '../../../assets/ch2/postgres_and_redis_cr.png'
+import figure2_6 from '../../../assets/ch2/pull-based_deployment.png'
+
 
 **This chapter covers**
 
@@ -38,6 +45,7 @@ Custom Resource Definitions (CRD) introduce new kinds to the Kubernetes API. Whe
 
 Figure 2.1 shows the logic of these interactions.
 
+<Image src={figure2_1} alt="Figure 2.1 The operator pattern"  />
 
 ###### Figure 2.1 The Operator Pattern
 
@@ -62,6 +70,7 @@ Using Stateful Sets and Persistent Volumes helps ensure data integrity. However,
 
 These database operators generally leverage StatefulSets and have options for installing databases with a persistent volume claim and persistent volumes on a Kubernetes cluster, as shown in Figure 2.2. Some offer persistence off-cluster as well. 
 
+<Image src={figure2_2} alt="Figure 2.2 Database creation flow"  />
 
 ###### Figure 2.2 Database creation flow  
 
@@ -74,6 +83,7 @@ Some operators will install multiple different kinds of databases on various Clo
 
 Installation of monitoring tools is also a common use case for operators. Take the Prometheus Operator and the Grafana Operator, to name two. These will generally install monitoring software on a Kubernetes cluster. Prometheus is a monitoring tool that can scrape metrics from services, pods, and ingress in Kubernetes. Prometheus's query language can then manipulate these metrics to customize what you want to monitor about your Kubernetes cluster. In addition, Prometheus also installs an alert manager, which triggers alerts based on thresholds. A schematic view of the Prometheus Operator is shown in Figure 2.3. You can create a Prometheus CR of kind Prometheus, which, in turn, will cause the Prometheus operator to create a Prometheus Statefulset and an AlertManger Statefulset based on the specifications of the Prometheus CR. These Statefulsets then create the respective pods, persistent volume claims, and persistent volumes for both Prometheus and AlertManager. Along with the installation, CR Prometheus has several other CRDs available to configure alerts and monitors.
 
+<Image src={figure2_3} alt="Figure 2.3 What happens when an Observability CR is created"  />
 
 ###### Figure 2.3 What happens when an Observability CR is created
 
@@ -106,6 +116,7 @@ In Listing 2.1 is a sample 3scale ApiManger CR, which only has the basic setup f
 ```
 With this information, the 3scale Operator will trigger and create deployment configurations. These, in turn, will create Pods, secrets, config maps, deployments, services, routes, and persistent volumes for the databases, as shown at a high level in Figure 2.4. Finally, it makes sure all these components can communicate with each other.
 
+<Image src={figure2_4} alt="Figure 2.4 Overview of the objects created by the 3scale Operator"  />
 
 ###### Figure 2.4 Overview of the objects created by the 3scale Operator
 
@@ -117,6 +128,7 @@ This operator's primary function is to provision databases for other application
 
 The operator is written in Golang and leverages the client libraries in AWS with aws-sdk-go and Google with their Go Cloud Client Libraries for accessing and provisioning their cloud resources. It can provide Postgres and Redis on a cluster as an extra feature using the Kubernetes API and available containers. In Figure 2.5, we use pre-created Custom Resources files with the kubectl command to trigger database creation on the cluster and cloud providers like Amazon AWS and Google GCP. The Cloud Resources Operator pod picks up these CR kinds and then acts upon their specifications to provision the databases. When finished provisioning, the operator will get the database credentials and create a secret from the credentials. Applications can then access databases using these secrets.
 
+<Image src={figure2_5} alt="Figure 2.5 Redis and Postgres CR’s triggering the creation of databases on and off the cluster "  />
 
 ###### Figure 2.5 Redis and Postgres CR’s triggering the creation of databases on and off the cluster 
 
@@ -235,6 +247,7 @@ In the previous sections, we discussed existing operators and their various use 
 
 Let's say we have a Git repository with a deployment specification in YAML for an application. We want this deployment to update on the cluster every time we push changes to the deployment in the Git repository. So we want the Kubernetes API to act on something that happens off-cluster in a Git repository and results in an update to deployment on the cluster. To achieve this, we can write an operator to leverage Git and the Kubernetes API. The operator will pull the YAML file, create a Deployment resource in the Kubernetes cluster, and update the status in the Kubernetes resource configuration. The pattern of synchronizing your configuration with a Git repository is called GitOps. We can start building an operator that follows the principles of GitOps, as shown in Figure 2.6.
 
+<Image src={figure2_5} alt="Figure 2.5 Pull-based deployment "  />
 
 ###### Figure 2.6. Pull-based deployment
 
