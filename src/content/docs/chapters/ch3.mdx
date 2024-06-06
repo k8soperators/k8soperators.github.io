@@ -2,11 +2,28 @@
 title: Spinning up your operator
 description: Kubernetes deployment guide for operators.
 ---
+import { Image } from 'astro:assets';
+import figure3_1 from '../../../assets/ch3/deployment_types.png'
+import figure3_2 from '../../../assets/ch3/operator_running_locally.png'
+import figure3_3 from '../../../assets/ch3/debug_vscode.png'
+import figure3_4 from '../../../assets/ch3/attach_intellij.png'
+import figure3_5 from '../../../assets/ch3/intellij_jar.png'
+import figure3_6 from '../../../assets/ch3/eclipse_remote.png'
+import figure3_7 from '../../../assets/ch3/core_components.png'
+import figure3_8 from '../../../assets/ch3/operator_running_cluster.png'
+import figure3_9 from '../../../assets/ch3/operator_scope.png'
+import figure3_10 from '../../../assets/ch3/operator_service_account.png'
+import figure3_11 from '../../../assets/ch3/RBAC_permission.png'
+import figure3_12 from '../../../assets/ch3/cluster_wide_permission.png'
+import figure3_13 from '../../../assets/ch3/scope_levels.png'
+import figure3_14 from '../../../assets/ch3/scope_watch.png'
+import figure3_15 from '../../../assets/ch3/ns_scope_api_limitations.png'
+
 
 **This chapter covers**
 
 - Kubernetes deployment guide for operators
-
+3
 - Understanding the scope of operator deployments
 
 - Learning to debug an operator
@@ -39,6 +56,8 @@ There are several ways to deploy a Kubernetes operator to a Kubernetes cluster. 
 In this section, we will focus on two deployment types for operators. First, we will describe the process for getting an operator running locally. Next, we will explain using a locally operational operator to debug the operator code. Finally, we can review the steps for deploying the operator on a Kubernetes cluster. Figure 3.1 shows a high-level overview of the two deployment types. We will discuss the use cases for these deployment methods.
 
 ****
+
+<Image src={figure3_1} alt="Figure 3.1 Deployment types for the operator"  /> 
 
  **Figure 3.1 Deployment types for the operator.**
 
@@ -148,7 +167,9 @@ An overview of the GitOps operator running locally can be seen in Figure 3.3. Th
 
  ****
 
-**Figure 3.3 Operator running locally.** 
+<Image src={figure3_2} alt="Figure 3.2 Operator running locally"  /> 
+
+**Figure 3.2 Operator running locally.** 
 
 With the operator running locally, we can create and deploy the CR shown in listing 3.3 with the kubectl apply command with EOF. We can check the status of the CR and confirm that the pod and service are up.
 
@@ -274,9 +295,9 @@ In Visual Studio Code (VS Code), we create a launch.json with attach using the c
 
 We can then select “Run” and “Start Debugging” from the VS Code dropdown menu to start the debugging process as shown in figure 3.4. 
 
+<Image src={figure3_3} alt="Figure 3.3 The Start Debugging option in VS Code Run menu"  /> 
 
-
-**Figure 3.4 The Start Debugging option in the VS Code Run menu** 
+**Figure 3.3 The Start Debugging option in the VS Code Run menu** 
 
 ****
 
@@ -286,14 +307,14 @@ We can then select “Run” and “Start Debugging” from the VS Code dropdown
 In IntelliJ, we can select “Run” and “Attach to Process” from the IntelliJ dropdown menu as shown in figure 3.5
 
 
-
-**Figure 3.5 Attach to Process on the Run dropdown menu in IntelliJ.**
+<Image src={figure3_4} alt="Figure 3.4 Attach to Process on the Run dropdown menu in IntelliJ"  /> 
+**Figure 3.4 Attach to Process on the Run dropdown menu in IntelliJ.**
 
 This will give you a pop-up screen with the option to select the jar file java-operator-ex-dev.jar automatically running on our project on port 5005, as shown in figure 3.6. Once the file is selected, you will be in debug mode. 
 
 
-
-**Figure 3.6 IntelliJ Attach to the jar file java-operator-ex-dev.jar on port 5005** 
+<Image src={figure3_5} alt="Figure 3.5 IntelliJ Attach to the jar file java-operator-ex-dev.jar on port 5005"  /> 
+**Figure 3.5 IntelliJ Attach to the jar file java-operator-ex-dev.jar on port 5005** 
 
 
 ### **Eclipse debugging**
@@ -303,8 +324,9 @@ In the Eclipse IDE, go to "Run" and "Debug Configurations..." from the dropdown 
 ****
 
 
+<Image src={figure3_6} alt="Figure 3.6 Eclipse Remote Java Application configuration"  /> 
 
-**Figure 3.7 Eclipse Remote Java Application configuration**
+**Figure 3.6 Eclipse Remote Java Application configuration**
 
 Many IDEs have the capability to attach to a process on a port, although the steps taken can look quite different in each case. We can start adding breakpoints, stepping through the code, and adding watches to variables. 
 
@@ -317,7 +339,9 @@ We will build an operator container from our local code base and deploy it to a 
 
 Before we start, we will briefly discuss what needs to be installed on a Kubernetes cluster for an operator to function. Figure 3.8 shows several components required for a viable operator to function.
 
-**Figure 3.8 Core components required for an operator to function 1. Kubernetes CRD API endpoint, 2. New CRD adding custom kind, 3. Operator deployment for operator installation, 4. Operator pod where the code lives, 5. Controller watches the CRD kind for changes, 6. Service for operator health and metrics monitoring, 7.Service account, 8.RoleBinding or ClusterRoleBinding, 9. Role or ClusterRole** 
+<Image src={figure3_7} alt="Figure 3.7 Core components required for an operator to function"  /> 
+
+**Figure 3.7 Core components required for an operator to function 1. Kubernetes CRD API endpoint, 2. New CRD adding custom kind, 3. Operator deployment for operator installation, 4. Operator pod where the code lives, 5. Controller watches the CRD kind for changes, 6. Service for operator health and metrics monitoring, 7.Service account, 8.RoleBinding or ClusterRoleBinding, 9. Role or ClusterRole** 
 
 The Kubernetes API server has a CRD API endpoint for accepting new CRD. When we upload the new CRD, the CRD API acts upon it. Our new kind is then defined, and the API endpoint for our new CRD is available on the Kubernetes API. Next, upload the operator deployment YAML. This will contain an operator container image and everything needed to get our operator started. This will, in turn, set about creating the operator pod. The operator pod is where the operator code runs and lives. Part of that code is the controller, which watches for instances of the kind defined by the CRD. A service is exposed as part of this installation that exposes the metrics endpoint on port 8080, which can be used to monitor the operator. A second endpoint can be exposed for the health probe endpoint on port 8081, which can be used to check the health and readiness of an operator pod. We will also install a service account. The operator pod owns this service account. The service account is an access mechanism for role-based access control. As part of the role-based access control, we require a Role binding, or cluster role binding, which ties the service account to a role that defines its permissions. It will be cluster role binding if the permissions needed are cluster-wide. A role, or cluster role, is also required, which defines the permissions and access level to resources on the cluster, such as the CRD kind. Again, it will be a cluster role if the scope of the permissions needs to be cluster-wide. Service accounts, Role Bindings, and Roles are closely tied together to allow access to resources on a Kubernetes cluster. We will discuss role-based access control (RBAC) further in Section 3.2.
 
@@ -705,13 +729,11 @@ We can see if our deployment was successful by confirming that the operator pod 
 ```
 \#A Note we don’t have access to the interactive tooling as we did when we ran mvn quarkus:dev as in listing 3.2. Again getting to this point shows the operator is in a healthy state
 
-
-
-**Figure 3.9 Expected output of kubectl log for the operator pod**
-
 Finally, as our operator is now deployed, we can create a CR, which will give our operator the location of our deployment on git and all the deployment to proceed, as shown in Figure 3.10.  
 
-**Figure 3.10 Overview for the GitOps operator installed on a Kubernetes cluster**
+<Image src={figure3_8} alt="Figure 3.8 Overview for the GitOps operator installed on a Kubernetes cluster"  /> 
+
+**Figure 3.8 Overview for the GitOps operator installed on a Kubernetes cluster**
 
 We can deploy the CR as shown in Listing 3.10 with the kubectl apply command with EOF and check the status as shown in Listing 3.11
 
@@ -796,11 +818,13 @@ Although not part of deploying an operator, it is good practice to test your ope
 
 There are three scopes to manage resources in Kubernetes: namespace, multi-namespace, and cluster-wide. Scoping the Kubernetes resource helps in isolation and better ways to manage resources for the developers and the system administrators. 
 
-Namespace-scoped resources isolate the resources for users within the namespace boundaries. A cluster-wide scope makes resources available to all namespaces within the cluster, while multiple namespaces manage resources in more than one namespace cluster. Figure 3.11 shows operator deployment in the namespace and cluster scope mode. In the namespace scope, the operator only controls the CR in the specified namespace. However, in the cluster scope, the operator will manage CRs in all the namespaces or specific groups of namespaces.
+Namespace-scoped resources isolate the resources for users within the namespace boundaries. A cluster-wide scope makes resources available to all namespaces within the cluster, while multiple namespaces manage resources in more than one namespace cluster. Figure 3.9 shows operator deployment in the namespace and cluster scope mode. In the namespace scope, the operator only controls the CR in the specified namespace. However, in the cluster scope, the operator will manage CRs in all the namespaces or specific groups of namespaces.
 
 ****
 
-**Figure 3.11 Operator deployed as namespace scope, multiple namespace scope, and cluster scope; as the CRD is an extension of the Kubernetes API, they are cluster scoped automatically.**
+<Image src={figure3_9} alt="Figure 3.9 Operator deployed as namespace scope, multiple namespace scope, and cluster scope"  /> 
+
+**Figure 3.9 Operator deployed as namespace scope, multiple namespace scope, and cluster scope; as the CRD is an extension of the Kubernetes API, they are cluster scoped automatically.**
 
 Cluster and multiple-namespace scope make the operator reusable across the Kubernetes cluster over namespace scope deployment. CRDs are deployed at the cluster level, meaning you deploy the operator in namespace and cluster-wide mode in a Kubernetes cluster. Both deployments refer to the same CRD. 
 
@@ -820,11 +844,11 @@ Kubernetes operators require appropriate permissions to perform their tasks. You
 
 ### **Identity of the operator**
 
-The reconciler process in an operator acts by requesting the Kubernetes API server. The Kubernetes operator uses a _Service Account_ to authenticate with the Kubernetes API server, as shown in Figure 3.12. In Kubernetes, service accounts represent a running process's identity. 
+The reconciler process in an operator acts by requesting the Kubernetes API server. The Kubernetes operator uses a _Service Account_ to authenticate with the Kubernetes API server, as shown in Figure 3.10. In Kubernetes, service accounts represent a running process's identity. 
 
+<Image src={figure3_10} alt="Figure 3.10 Operator uses a service account to authenticate with the Kubernetes API server"  /> 
 
-
-**Figure 3.12 Operator uses a service account to authenticate with the Kubernetes API server.**
+**Figure 3.10 Operator uses a service account to authenticate with the Kubernetes API server.**
 
 Kubernetes API server authenticates a request from an operator by verifying the service account. However, an operator can only modify resources depending on their service account permissions. We will examine how to apply permissions for a service account with the help of RBAC in Kubernetes. First, we can look at the service account created when we deploy an operator to a Kubernetes cluster. Operator tools like Operator SDK automatically generate the service account configuration. Check the created service account for the GitOps operator example, as listed in listing 3.13.
 
@@ -852,7 +876,9 @@ To allow the operator to modify the resource or custom resource in Kubernetes wi
 
 The Kubernetes RBAC permissions are defined using _Roles,_ which tell “what” actions are allowed for a group of resources in Kubernetes. And _RoleBinding_ allocates the rules to a _Subject_, allowing "who" can perform the action defined in a role. Figure 3.13 shows the components required to determine permissions for the operator service account, i.e., Role and RoleBinding. 
 
-**Figure 3.13 RBAC permission assigned to the operator service account**
+<Image src={figure3_11} alt="Figure 3.11 RBAC permission assigned to the operator service account"  /> 
+
+**Figure 3.11 RBAC permission assigned to the operator service account**
 
 
 ### **Role**
@@ -942,9 +968,11 @@ With the Role and RoleBinding in place, the operator has permission to perform o
 
 ### **ClusterRole and ClusterRoleBindings**
 
-ClusterRoles follow the same pattern as Roles but at the Kubernetes cluster-wide level. Cluster scope resources include CRDs, Persistent Volumes, Storage classes, Nodes, etc. ClusterRoleBinding allows linking the operator’s service account to a ClusterRole, which allows the GitOps operator service account to modify the CR in all namespaces, as shown in Figure 3.14. 
+ClusterRoles follow the same pattern as Roles but at the Kubernetes cluster-wide level. Cluster scope resources include CRDs, Persistent Volumes, Storage classes, Nodes, etc. ClusterRoleBinding allows linking the operator’s service account to a ClusterRole, which allows the GitOps operator service account to modify the CR in all namespaces, as shown in Figure 3.12. 
 
-**Figure 3.14 Cluster-wide permission assigned to the GitOps service account**
+<Image src={figure3_12} alt="Figure 3.12 Operator observes changes to custom resources based on namespace scope levels"  /> 
+
+**Figure 3.12 Cluster-wide permission assigned to the GitOps service account**
 
 We can examine the ClusterRole and ClusterRoleBinding for deploying the GitOps operator as cluster-scoped. When defining a ClusterRole and ClusterRoleBinding, specifying a namespace is not required. This allows binding a service account to cluster-wide privileges. Let’s define a cluster role for the GitOps operator in listing 3.16 and the cluster role binding in listing 3.17.
 
@@ -1014,10 +1042,12 @@ We looked into how to define an identity for the operator through a service acco
 
 ## **_3.2.2 How the operator observes change events_**  
 
-Kubernetes APIs support a watch verb that publishes resource events when a resource or CR changes state. By making watch requests to the Kubernetes API server, the controller in an operator monitors the change events related to CRs. The watch API request requires specifying a namespace input parameter for a given resource type, where you can use one namespace or a list of namespaces. A good practice followed by operator tools is to expose a `WATCH_NAMESPACE` environment variable instead of hard-coding the value of the namespace in the code, which allows setting the context. Before running the operator, you can set the environment variable, for example, `WATCH_NAMESPACE=random` namespace value, and the operator will only watch the CR in the “random” namespace.  Using the `WATCH_NAMESPACE `allows setting the scope of operator deployment combined with permissions through Kubernetes RBAC. Figure 3.15 showcases the impact of setting `WATCH_NAMESPACE` with operator deployment.
+Kubernetes APIs support a watch verb that publishes resource events when a resource or CR changes state. By making watch requests to the Kubernetes API server, the controller in an operator monitors the change events related to CRs. The watch API request requires specifying a namespace input parameter for a given resource type, where you can use one namespace or a list of namespaces. A good practice followed by operator tools is to expose a `WATCH_NAMESPACE` environment variable instead of hard-coding the value of the namespace in the code, which allows setting the context. Before running the operator, you can set the environment variable, for example, `WATCH_NAMESPACE=random` namespace value, and the operator will only watch the CR in the “random” namespace.  Using the `WATCH_NAMESPACE `allows setting the scope of operator deployment combined with permissions through Kubernetes RBAC. Figure 3.13 showcases the impact of setting `WATCH_NAMESPACE` with operator deployment.
 
 
-**Figure 3.15 Operator observes changes to custom resources based on namespace scope levels.**
+<Image src={figure3_13} alt="Figure 3.13 Operator observes changes to custom resources based on namespace scope levels"  /> 
+
+**Figure 3.13 Operator observes changes to custom resources based on namespace scope levels.**
 
 When the `WATCH_NAMESPACE `is` `set to a specific namespace, it will only require the least privileges and be bound to the namespace. Changing the context to cluster-wide will require cluster-level permissions and increase the complexity as the operator must watch resources in all namespaces. 
 
@@ -1029,11 +1059,12 @@ For example,  GitOps operator example, we can run the operator with the argumen
 ```
     mvn quarkus:dev '-Dquarkus.operator-sdk.controllers."gitopsreconciler".namespaces=’default,gitops-demoapp, gitops-demoapp-second'
 ```
-By default, the GitOps operator is set to watch all namespaces. We can deploy the GitOps operator with ClusterRole and ClusterRoleBinding to the default namespace and create a sample CR in the namespace, for example, gitops-demoapp and gitops-demoapp-second, as shown in Figure 3.16.
+By default, the GitOps operator is set to watch all namespaces. We can deploy the GitOps operator with ClusterRole and ClusterRoleBinding to the default namespace and create a sample CR in the namespace, for example, gitops-demoapp and gitops-demoapp-second, as shown in Figure 3.14.
 
 
+<Image src={figure3_14} alt="Figure 3.14 Scope of the operator can be set through the watch namespace parameter. When the watch parameter is set to namespace “A”, the Gitops operator manages “demoapp” CR in the namespace “A” boundaries. When the watch is set to All namespaces, the Gitops operator manages CR in all the namespaces."  /> 
 
-**Figure 3.16 Scope of the operator can be set through the watch namespace parameter. When the watch parameter is set to namespace “A”, the Gitops operator manages “demoapp” CR in the namespace “A” boundaries. When the watch is set to All namespaces, the Gitops operator manages CR in all the namespaces.**  
+**Figure 3.14 Scope of the operator can be set through the watch namespace parameter. When the watch parameter is set to namespace “A”, the Gitops operator manages “demoapp” CR in the namespace “A” boundaries. When the watch is set to All namespaces, the Gitops operator manages CR in all the namespaces.**  
 
 We have seen how to deploy the Gitops operator to a specific namespace; the default mode for deploying the Gitops operator is set to watch all namespaces. The GitOps operator is deployed to the default namespace with the ClusterRole and ClusterRoleBinding discussed in the previous section, which allows the creation and modification of resources in all namespaces. 
 
@@ -1101,9 +1132,11 @@ We have seen how you can deploy operators into specific namespaces and in the cl
 
 ### **The Limitations of a Namespace-Scoped operator**
 
-The challenges with namespace scope arise from the fact that the CRD will always be Cluster scoped, and there can only ever be one definition on a cluster.  API changes in a CRD can break between different versions of an operator, so managing one operator install is easy, and managing multiple operator installations is difficult. Say we have a Kubernetes cluster with two different users. Each installs a different version of the same operator in different namespaces. One of the versions of the operator has breaking changes in its API that won’t work with the previous version.  What happens is missing parts of the API required for one of the operators are not present on the cluster, as we only have one CRD for the kind. One of the operators will crash or panic and fail, as shown in Figure 3.17, even though it is installed correctly. 
+The challenges with namespace scope arise from the fact that the CRD will always be Cluster scoped, and there can only ever be one definition on a cluster.  API changes in a CRD can break between different versions of an operator, so managing one operator install is easy, and managing multiple operator installations is difficult. Say we have a Kubernetes cluster with two different users. Each installs a different version of the same operator in different namespaces. One of the versions of the operator has breaking changes in its API that won’t work with the previous version.  What happens is missing parts of the API required for one of the operators are not present on the cluster, as we only have one CRD for the kind. One of the operators will crash or panic and fail, as shown in Figure 3.15, even though it is installed correctly. 
 
-**Figure 3.17 Namespaces scope API limitations** 
+<Image src={figure3_15} alt="Figure 3.15 Namespaces scope API limitation."  /> 
+
+**Figure 3.15 Namespaces scope API limitations** 
 
 This gets more complicated as operators can use other operators to install components, and you don’t always have a choice in what version of an operator is installed. Hence, tracking down possible failures and fixing the incompatibility gets harder.  A cluster-scoped operator doesn’t have this difficulty because you will only ever be able to install one cluster-scoped operator on the cluster, and to consume it, you only need to pass in a CR. 
 
