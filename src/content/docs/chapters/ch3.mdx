@@ -87,73 +87,73 @@ Let's start running an operator locally; out of the box, the Operator SDK and Qu
 ****
 
 **Listing 3.1 Create a project and upload the CRD**
-```
-    $ mvn package
-    [INFO] Scanning for projects...
-    [INFO]
-    [INFO] --------------< com.github.k8soperators:java-operator-ex >--------------
-    [INFO] Building java-operator-ex 0.0.1-SNAPSHOT
-    [INFO] --------------------------------[ jar ]---------------------------------
-    # comment lines
-    [INFO] Adding existing ClusterRole with name: java-operator-ex.
-    [INFO] Adding existing ServiceAccount with name: java-operator-ex.
-    [INFO] Adding existing ClusterRoleBinding with name: java-operator-ex.
-    [INFO] [io.quarkiverse.operatorsdk.deployment.QuarkusControllerConfigurationBuilder] Processed 'com.github.k8soperators.GitOpsReconciler' reconciler named 'gitopsreconciler' for 'gitops.com.github.k8soperators' resource (version 'com.github.k8soperators/v1alpha1')
-    [INFO] Generating 'gitops.com.github.k8soperators' version 'v1alpha1' with com.github.k8soperators.GitOps (spec: com.github.k8soperators.GitOpsSpec / status com.github.k8soperators.GitOpsStatus)...
-    [INFO] [io.quarkiverse.operatorsdk.deployment.OperatorSDKProcessor] Generated gitops.com.github.k8soperators CRD:
-    # comment lines
-    [INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating CSV for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/manifests/java-operator-ex.clusterserviceversion.yaml
-    [INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating annotations for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/metadata/annotations.yaml
-    [INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating bundle for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/bundle.Dockerfile
-    [INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating Custom Resource Definition for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/manifests/gitops.com.github.k8soperators-v1.crd.yml
-    [INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Starting (local) container image build for jar using jib.
-    [INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Using docker to run the native image builder
-    # comment lines
-    [INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Created container image austincunningham/java-operator-ex:0.0.1-SNAPSHOT (sha256:067fec03f502103b5a4a6de729c31242ef7935c65fddb56321886a3cbc676426)
+```bash
+$ mvn package
+[INFO] Scanning for projects...
+[INFO]
+[INFO] --------------< com.github.k8soperators:java-operator-ex >--------------
+[INFO] Building java-operator-ex 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+# comment lines
+[INFO] Adding existing ClusterRole with name: java-operator-ex.
+[INFO] Adding existing ServiceAccount with name: java-operator-ex.
+[INFO] Adding existing ClusterRoleBinding with name: java-operator-ex.
+[INFO] [io.quarkiverse.operatorsdk.deployment.QuarkusControllerConfigurationBuilder] Processed 'com.github.k8soperators.GitOpsReconciler' reconciler named 'gitopsreconciler' for 'gitops.com.github.k8soperators' resource (version 'com.github.k8soperators/v1alpha1')
+[INFO] Generating 'gitops.com.github.k8soperators' version 'v1alpha1' with com.github.k8soperators.GitOps (spec: com.github.k8soperators.GitOpsSpec / status com.github.k8soperators.GitOpsStatus)...
+[INFO] [io.quarkiverse.operatorsdk.deployment.OperatorSDKProcessor] Generated gitops.com.github.k8soperators CRD:
+# comment lines
+[INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating CSV for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/manifests/java-operator-ex.clusterserviceversion.yaml
+[INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating annotations for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/metadata/annotations.yaml
+[INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating bundle for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/bundle.Dockerfile
+[INFO] [io.quarkiverse.operatorsdk.bundle.deployment.BundleProcessor] Generating Custom Resource Definition for java-operator-ex controller -> /home/austincunningham/repo/examples/code/java-operator-ex/target/bundle/java-operator-ex/manifests/gitops.com.github.k8soperators-v1.crd.yml
+[INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Starting (local) container image build for jar using jib.
+[INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Using docker to run the native image builder
+# comment lines
+[INFO] [io.quarkus.container.image.jib.deployment.JibProcessor] Created container image austincunningham/java-operator-ex:0.0.1-SNAPSHOT (sha256:067fec03f502103b5a4a6de729c31242ef7935c65fddb56321886a3cbc676426)
 
 ****
 
-    [INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 7504ms
-    [INFO] ------------------------------------------------------------------------
-    [INFO] BUILD SUCCESS
-    [INFO] ------------------------------------------------------------------------
-    [INFO] Total time:  10.521 s
-    [INFO] Finished at: 2023-07-19T20:16:19+01:00
-    [INFO] ------------------------------------------------------------------------
+[INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 7504ms
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.521 s
+[INFO] Finished at: 2023-07-19T20:16:19+01:00
+[INFO] ------------------------------------------------------------------------
 ```
 ****
-```
-    $ kubectl create namespace gitops
-    namespace/gitops created
+```bash
+$ kubectl create namespace gitops
+namespace/gitops created
 ```
 ****
 
 You should note that after running the` mvn package` command, we see a target directory added to our local codebase with many subdirectories. At this point, we are only concerned with the target root directory. In this directory, a jar file is generated called `java-operator-ex-dev.jar`, which we can run using the Java runtime to run the operator locally. The Quarkus Operator SDK comes with another inbuilt maven command` mvn quarkus:dev,` for running locally, which we can see in Listing 3.2 along with the operator logs output as standard out. This maven command will also create and upload the CRD to the cluster.  We can kill the process with ctrl-c or use q to quit, but we will leave it running for now. 
 
 **Listing 3.2 Running your operator locally** 
-```
-    $ mvn quarkus:dev                                                 
-    __  ____  __  _____   ___  __ ____  ______
-     --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
-     -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
-    --\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
-    2023-07-19 20:19:22,291 INFO  [io.qua.ope.run.ConfigurationServiceRecorder] (Quarkus Main Thread) Leader election deactivated because it is only activated for [prod] profiles. Currently active profiles: [dev]
+```bash
+$ mvn quarkus:dev                                                 
+__  ____  __  _____   ___  __ ____  ______
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2023-07-19 20:19:22,291 INFO  [io.qua.ope.run.ConfigurationServiceRecorder] (Quarkus Main Thread) Leader election deactivated because it is only activated for [prod] profiles. Currently active profiles: [dev]
 
 ****
 
-    # comment lines
-    2023-07-19 20:19:22,371 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) Starting 'gitopsreconciler' controller for reconciler: com.github.k8soperators.GitOpsReconciler, resource: com.github.k8soperators.GitOps
-    2023-07-19 20:19:22,793 WARN  [io.fab.kub.cli.dsl.int.VersionUsageUtils] (InformerWrapper [gitops.com.github.k8soperators/v1alpha1] 170) The client is using resource type 'gitops' with unstable version 'v1alpha1'
-    2023-07-19 20:19:23,173 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) 'gitopsreconciler' controller started
-    2023-07-19 20:19:23,211 INFO  [io.quarkus] (Quarkus Main Thread) java-operator-ex 0.0.1-SNAPSHOT on JVM (powered by Quarkus 3.1.2.Final) started in 4.423s. Listening on: http://localhost:8080
-    2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
-    2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, kubernetes, kubernetes-client, micrometer, openshift-client, operator-sdk, smallrye-context-propagation, smallrye-health, vertx]            #A
+# comment lines
+2023-07-19 20:19:22,371 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) Starting 'gitopsreconciler' controller for reconciler: com.github.k8soperators.GitOpsReconciler, resource: com.github.k8soperators.GitOps
+2023-07-19 20:19:22,793 WARN  [io.fab.kub.cli.dsl.int.VersionUsageUtils] (InformerWrapper [gitops.com.github.k8soperators/v1alpha1] 170) The client is using resource type 'gitops' with unstable version 'v1alpha1'
+2023-07-19 20:19:23,173 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) 'gitopsreconciler' controller started
+2023-07-19 20:19:23,211 INFO  [io.quarkus] (Quarkus Main Thread) java-operator-ex 0.0.1-SNAPSHOT on JVM (powered by Quarkus 3.1.2.Final) started in 4.423s. Listening on: http://localhost:8080
+2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, kubernetes, kubernetes-client, micrometer, openshift-client, operator-sdk, smallrye-context-propagation, smallrye-health, vertx]            #A
 
 ****
 
-    --
-    Tests paused
-    Press [r] to resume testing, [o] Toggle test output, [:] for the terminal, [h] for more options>                                                          #B
+--
+Tests paused
+Press [r] to resume testing, [o] Toggle test output, [:] for the terminal, [h] for more options>                                                          #B
 
 ****
 ```
@@ -174,83 +174,87 @@ An overview of the GitOps operator running locally can be seen in Figure 3.3. Th
 With the operator running locally, we can create and deploy the CR shown in listing 3.3 with the kubectl apply command with EOF. We can check the status of the CR and confirm that the pod and service are up.
 
 **Listing 3.3 Deploy the CR**   
-```
-    $ kubectl apply -f - <<EOF
-    ---
-    apiVersion: com.github.k8soperators/v1alpha1
-    kind: GitOps
-    metadata:
-      name: gitops-sample
-      namespace: gitops
-    spec:
-      url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
-    EOF
+```bash
+$ kubectl apply -f - <<EOF
+---
+apiVersion: com.github.k8soperators/v1alpha1
+kind: GitOps
+metadata:
+  name: gitops-sample
+  namespace: gitops
+spec:
+  url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
+EOF
 ```
 ****
-```
+```bash
     $ kubectl get gitops gitops-sample -n gitops -oyaml | grep -A 10 “status:”   #A
-    status:
-      message: ""
-      phase: READY
-      resources:
-      - apiVersion: apps/v1
-     kind: Deployment
-     name: demo-app
-      - apiVersion: v1
-     kind: Service
-     name: demo-app
 ```
-****
-```
-    $ kubectl get pods --namespace=gitops                                        #B
-    NAME                            READY   STATUS         RESTARTS    AGE
-    demo-app-54ccb85644-hmxkv       1/1 Running        1            1m
-    java-operator-ex-6cc4ffcffc-cvqpz 1/1 Running          1                 7m
-```
-****
-```
-    $ kubectl get service demo-app --namespace=gitops -oyaml                     #C
+```yaml
+status:
+  message: ""
+  phase: READY
+  resources:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: demo-app
+  - apiVersion: v1
     kind: Service
-    apiVersion: v1
-    metadata:
-      annotations:
-        app.quarkus.io/build-timestamp: '2022-12-16 - 16:20:54 +0000'
-      resourceVersion: '2156593'
-      name: demo-app
-      uid: a66124f5-3a6c-47b4-bcaa-5db394f15df4
-      creationTimestamp: '2023-06-27T19:26:43Z'
-      managedFields:...
-      namespace: java-operator-ex
-      ownerReferences:
-        - apiVersion: com.github.k8soperators.ch3/v1alpha1
-          kind: GitOps
-          name: java-operator-ex-sample
-          uid: c8895bdd-528d-4d5c-a0ce-3c0167b91c07
-      labels:
-        app.kubernetes.io/name: demo-app
-        app.kubernetes.io/version: latest
-    spec:
-      clusterIP: 10.217.5.240
-      externalTrafficPolicy: Cluster
-      ipFamilies:
-        - IPv4
-      ports:
-        - name: http
-          protocol: TCP
-          port: 80
-          targetPort: 8080
-          nodePort: 31182
-      internalTrafficPolicy: Cluster
-      clusterIPs:
-        - 10.217.5.240
-      type: NodePort
-      ipFamilyPolicy: SingleStack
-      sessionAffinity: None
-      selector:
-        app.kubernetes.io/name: demo-app
-        app.kubernetes.io/version: latest
-    status:
-      loadBalancer: {}
+    name: demo-app
+```
+****
+```bash
+$ kubectl get pods --namespace=gitops                                        #B
+NAME                              READY   STATUS         RESTARTS    AGE
+demo-app-54ccb85644-hmxkv         1/1     Running        1            1m
+java-operator-ex-6cc4ffcffc-cvqpz 1/1     Running        1            7m
+```
+****
+```bash
+$ kubectl get service demo-app --namespace=gitops -oyaml                     #C
+```
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    app.quarkus.io/build-timestamp: '2022-12-16 - 16:20:54 +0000'
+  resourceVersion: '2156593'
+  name: demo-app
+  uid: a66124f5-3a6c-47b4-bcaa-5db394f15df4
+  creationTimestamp: '2023-06-27T19:26:43Z'
+  managedFields:...
+  namespace: java-operator-ex
+  ownerReferences:
+    - apiVersion: com.github.k8soperators.ch3/v1alpha1
+      kind: GitOps
+      name: java-operator-ex-sample
+      uid: c8895bdd-528d-4d5c-a0ce-3c0167b91c07
+  labels:
+    app.kubernetes.io/name: demo-app
+    app.kubernetes.io/version: latest
+spec:
+  clusterIP: 10.217.5.240
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 31182
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 10.217.5.240
+  type: NodePort
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app.kubernetes.io/name: demo-app
+    app.kubernetes.io/version: latest
+status:
+  loadBalancer: {}
 ```
 ****
 
@@ -277,19 +281,19 @@ Let's get started. First, we run the `mvn quarkus:dev` command from the command 
 In Visual Studio Code (VS Code), we create a launch.json with attach using the configuration in listing 3.4
 
 **Listing 3.4 VS Code launch config for attaching to process on port 5005**
-```
-    {
-      "version": "0.2.0",
-      "configurations": [
-        {
-          "type": "java",
-          "name": "Attach",
-          "request": "attach",
-          "hostName": "localhost",
-          "port": "5005"
-        },
-      ]
-    }
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Attach",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": "5005"
+    },
+  ]
+}
 ```
 ****
 
@@ -348,98 +352,100 @@ The Kubernetes API server has a CRD API endpoint for accepting new CRD. When we 
 Now that we are familiar with the components required for the operator to function let's start installing our operator on a cluster. First, we will use the `make install` command, shown in Listing 3.5, to upload the CRD to the cluster. We will also confirm that the CRD is present on the cluster with a kubectl command.
 
 **Listing 3.5 Build and deploy CRD**      
-```
-    $ mvn package
-```
-****
-```
-    $ kubectl create namespace gitops                                    #A
+```bash
+$ mvn package
 ```
 ****
-```
-    $ make install                                                       #B
-    customresourcedefinition.apiextensions.k8s.io/gitops.com.github.k8soperators created
+```bash
+$ kubectl create namespace gitops                                    #A
 ```
 ****
+```bash
+$ make install                                                       #B
+customresourcedefinition.apiextensions.k8s.io/gitops.com.github.k8soperators created
 ```
-    $ kubectl get crd gitops.com.github.k8soperators -oyaml          #C
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition
-    metadata:
-      annotations:...
-      creationTimestamp: "2023-06-10T11:25:37Z"
-      generation: 1
-      managedFields: ...
-      name: gitops.com.github.k8soperators
-      resourceVersion: "323490"
-      uid: 632460d5-9d42-4322-be32-993c47caa3a8
-    spec:
-      conversion:
-        strategy: None
-      group: com.github.k8soperators
-      names:
-        kind: GitOps
-        listKind: GitOpsList
-        plural: gitops
-        singular: gitops
-      scope: Namespaced
-      versions:
-      - name: v1alpha1
-        schema:
-          openAPIV3Schema:
-            properties:
-              spec:
-                properties:
-                  url:
-                    type: string
-                type: object
-              status:
-                properties:
-                  message:
-                    type: string
-                  phase:
-                    enum:
-                    - FAILED
-                    - UNKNOWN
-                    - ENUM$VALUES
-                    - READY
-                    type: string
-                  resources:
-                    items:
-                      properties:
-                        apiVersion:
-                          type: string
-                        kind:
-                          type: string
-                        name:
-                          type: string
-                      type: object
-                    type: array
-                type: object
-            type: object
-        served: true
-        storage: true
-        subresources:
-          status: {}
-    status:
-      acceptedNames:
-        kind: GitOps
-        listKind: GitOpsList
-        plural: gitops
-        singular: gitops
-      conditions:
-      - lastTransitionTime: "2023-06-10T11:25:37Z"
-        message: no conflicts found
-        reason: NoConflicts
-        status: "True"
-        type: NamesAccepted
-      - lastTransitionTime: "2023-06-10T11:25:37Z"
-        message: the initial names have been accepted
-        reason: InitialNamesAccepted
-        status: "True"
-        type: Established
-      storedVersions:
-      - v1alpha1
+****
+```bash
+$ kubectl get crd gitops.com.github.k8soperators -oyaml          #C
+```
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:...
+  creationTimestamp: "2023-06-10T11:25:37Z"
+  generation: 1
+  managedFields: ...
+  name: gitops.com.github.k8soperators
+  resourceVersion: "323490"
+  uid: 632460d5-9d42-4322-be32-993c47caa3a8
+spec:
+  conversion:
+    strategy: None
+  group: com.github.k8soperators
+  names:
+    kind: GitOps
+    listKind: GitOpsList
+    plural: gitops
+    singular: gitops
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              url:
+                type: string
+            type: object
+          status:
+            properties:
+              message:
+                type: string
+              phase:
+                enum:
+                - FAILED
+                - UNKNOWN
+                - ENUM$VALUES
+                - READY
+                type: string
+              resources:
+                items:
+                  properties:
+                    apiVersion:
+                      type: string
+                    kind:
+                      type: string
+                    name:
+                      type: string
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: GitOps
+    listKind: GitOpsList
+    plural: gitops
+    singular: gitops
+  conditions:
+  - lastTransitionTime: "2023-06-10T11:25:37Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2023-06-10T11:25:37Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1alpha1
 
 ****
 ```
@@ -456,19 +462,19 @@ Again, after running the `mvn package` command, we see a target directory added 
 Next, we will need to build an operator container image, and the Operator SDK provides a make command to do this for us as well in Listing 3.6. We will generate the container and push it to a container registry in this case, Docker Hub using the Docker CLI we could also use Podman CLI  for this task. You will need to have a Docker Hub account to complete this step. Although you can use any registry, we will continue these instructions in an opinionated way. 
 
 **Listing 3.6 Build an operator container image** 
-```
-    $ make docker-build
-    [INFO] BUILD SUCCESS                                              #A
-```
-****
-```
-    $ docker images                                                   #B
-    REPOSITORY                          TAG             IMAGE ID   CREATED         SIZE
-    <user name>/java-operator-ex        0.0.1-SNAPSHOT  <some sha> 18 seconds ago  412MB
+```bash
+$ make docker-build
+[INFO] BUILD SUCCESS                                              #A
 ```
 ****
+```bash
+$ docker images                                                   #B
+REPOSITORY                          TAG             IMAGE ID   CREATED         SIZE
+<user name>/java-operator-ex        0.0.1-SNAPSHOT  <some sha> 18 seconds ago  412MB
 ```
-    $ docker push <user name>/java-operator-ex:0.0.1-SNAPSHOT         #C
+****
+```bash
+$ docker push <user name>/java-operator-ex:0.0.1-SNAPSHOT         #C
 ```
 ****
 
@@ -481,178 +487,180 @@ Next, we will need to build an operator container image, and the Operator SDK pr
 Next, we will install the operator to the Kubernetes cluster. By running the `mvn package` command previously, the Quarkus Operator SDK has already generated YAML files in `target/kubernetes/kubernetes.yml`  for a deployment, a service, a service account, a Role, a Rolebinding, a ClusterRole, and a ClusterRoleBinding: all the elements shown in figure 3.8. We can see the contents of the kubernetes.yml in Listing 3.7, and we have a make command to add them to the cluster, as shown in Listing 3.8.
 
 **Listing 3.7 Contents of kubernetes.yml** 
+```bash
+$ cat target/kubernetes/kubernetes.yml
 ```
-    cat target/kubernetes/kubernetes.yml
-    ---
-    apiVersion: v1
-    kind: ServiceAccount                                                   #A
-    metadata:
-      # comment lines
-      name: java-operator-ex
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole                                                      #B
-    metadata:
-      # comment lines
-      name: java-operator-ex
-    rules:
-      - apiGroups:
-          - apiextensions.k8s.io
-        resources:
-          - customresourcedefinitions
-        verbs:
-          - get
-          - list
-          - watch
-      - apiGroups:
-          - com.github.k8soperators
-        resources:
-          - gitops
-          - gitops/status
-        verbs:
-          - get
-          - list
-          - watch
-          - create
-          - delete
-          - patch
-          - update
-      - apiGroups:
-          - apps
-          - extensions
-        resources:
-          - deployments
-          - deployments/status
-        verbs:
-          - get
-          - list
-          - watch
-          - create
-          - delete
-          - patch
-          - update
-      - apiGroups:
-          - ""
-        resources:
-          - services
-          - configmaps
-          - secrets
-        verbs:
-          - get
-          - list
-          - watch
-          - create
-          - delete
-          - patch
-          - update
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding                                                    #C
-    metadata:
-      # comment lines
-      name: java-operator-ex
-    roleRef:
-      kind: ClusterRole
-      apiGroup: rbac.authorization.k8s.io
-      name: java-operator-ex
-    subjects:
-      - kind: ServiceAccount
-        name: java-operator-ex
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: java-operator-ex-view
-    roleRef:
-      kind: ClusterRole
-      apiGroup: rbac.authorization.k8s.io
-      name: view
-    subjects:
-      - kind: ServiceAccount
-        name: java-operator-ex
-    ---
-    apiVersion: v1
-    kind: Service                                                       #D
-    metadata:
-      # comment lines
-      name: java-operator-ex
-    spec:
-      ports:
-        - name: https
-          port: 443
-          protocol: TCP
-          targetPort: 8443
-        - name: http
-          port: 80
-          protocol: TCP
-          targetPort: 8080
-      selector:
-        app.kubernetes.io/name: java-operator-ex
-        app.kubernetes.io/version: 0.0.1-SNAPSHOT
-      type: ClusterIP
-    ---
-    apiVersion: apps/v1
-    kind: Deployment                                                       #E
-    metadata:
-      # comment lines
-      name: java-operator-ex
-    spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          app.kubernetes.io/name: java-operator-ex
-          app.kubernetes.io/version: 0.0.1-SNAPSHOT
-      template:
-        metadata:
-        # comments lines
-        spec:
-          containers:
-            - env:
-                - name: KUBERNETES_NAMESPACE
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.namespace
-              image: k8soperators/java-operator-ex:0.0.1-SNAPSHOT
-              imagePullPolicy: Always
-              livenessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /q/health/live
-                  port: 8080
-                  scheme: HTTP
-                initialDelaySeconds: 5
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 10
-              name: java-operator-ex
-              ports:
-                - containerPort: 8443
-                  name: https
-                  protocol: TCP
-                - containerPort: 8080
-                  name: http
-                  protocol: TCP
-              readinessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /q/health/ready
-                  port: 8080
-                  scheme: HTTP
-                initialDelaySeconds: 5
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 10
-              startupProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /q/health/started
-                  port: 8080
-                  scheme: HTTP
-                initialDelaySeconds: 5
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 10
-          serviceAccountName: java-operator-ex
+```yaml
+---
+apiVersion: v1
+kind: ServiceAccount                                                   #A
+metadata:
+  # comment lines
+  name: java-operator-ex
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole                                                      #B
+metadata:
+  # comment lines
+  name: java-operator-ex
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - com.github.k8soperators
+    resources:
+      - gitops
+      - gitops/status
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+  - apiGroups:
+      - apps
+      - extensions
+    resources:
+      - deployments
+      - deployments/status
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding                                                    #C
+metadata:
+  # comment lines
+  name: java-operator-ex
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: java-operator-ex
+subjects:
+  - kind: ServiceAccount
+    name: java-operator-ex
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: java-operator-ex-view
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: java-operator-ex
+---
+apiVersion: v1
+kind: Service                                                       #D
+metadata:
+  # comment lines
+  name: java-operator-ex
+spec:
+  ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 8443
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: java-operator-ex
+    app.kubernetes.io/version: 0.0.1-SNAPSHOT
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment                                                       #E
+metadata:
+  # comment lines
+  name: java-operator-ex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: java-operator-ex
+      app.kubernetes.io/version: 0.0.1-SNAPSHOT
+  template:
+    metadata:
+    # comments lines
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: k8soperators/java-operator-ex:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: java-operator-ex
+          ports:
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/started
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+      serviceAccountName: java-operator-ex
 ```
 ****
 
@@ -669,17 +677,17 @@ Next, we will install the operator to the Kubernetes cluster. By running the `mv
 ****
 
 **Listing 3.8 Deploy the operator resources**  
-```
-    $ make deploy                                                    #A
-    kubectl apply -f target/kubernetes/kubernetes.yml
-    serviceaccount/java-operator-ex created
-    service/java-operator-ex created
-    rolebinding.rbac.authorization.k8s.io/java-operator-ex-view created
-    rolebinding.rbac.authorization.k8s.io/gitopsreconciler-role-binding created
-    clusterrole.rbac.authorization.k8s.io/gitopsreconciler-cluster-role created
-    clusterrole.rbac.authorization.k8s.io/josdk-crd-validating-cluster-role created
-    clusterrolebinding.rbac.authorization.k8s.io/gitopsreconciler-crd-validating-role-binding created
-    deployment.apps/ch3-java-operator-ex configured
+```bash
+$ make deploy                                                    #A
+kubectl apply -f target/kubernetes/kubernetes.yml
+serviceaccount/java-operator-ex created
+service/java-operator-ex created
+rolebinding.rbac.authorization.k8s.io/java-operator-ex-view created
+rolebinding.rbac.authorization.k8s.io/gitopsreconciler-role-binding created
+clusterrole.rbac.authorization.k8s.io/gitopsreconciler-cluster-role created
+clusterrole.rbac.authorization.k8s.io/josdk-crd-validating-cluster-role created
+clusterrolebinding.rbac.authorization.k8s.io/gitopsreconciler-crd-validating-role-binding created
+deployment.apps/ch3-java-operator-ex configured
 ```
 ****
 
@@ -692,38 +700,40 @@ We can see if our deployment was successful by confirming that the operator pod 
 ****
 
 **Listing 3.9 Check the operator deployment** 
+```bash
+$ kubectl get pod java-operator-ex-<sha> -namespace=gitops -oyaml | grep -A 10 “status:”  
 ```
-    $ kubectl get pod java-operator-ex-<sha> -namespace=gitops -oyaml | grep -A 10 “status:”  
-    status:
-      phase: Running
-      conditions:
-     - type: Initialized
-       status: 'True'
-       lastProbeTime: null
-       lastTransitionTime: '2023-06-27T07:56:04Z'
-     - type: Ready
-       status: 'True'
-       lastProbeTime: null
-       lastTransitionTime: '2023-07-07T16:43:43Z'
+```yaml
+status:
+  phase: Running
+  conditions:
+    - type: Initialized
+   status: 'True'
+   lastProbeTime: null
+   lastTransitionTime: '2023-06-27T07:56:04Z'
+    - type: Ready
+   status: 'True'
+   lastProbeTime: null
+   lastTransitionTime: '2023-07-07T16:43:43Z'
 ```
 ****
-```
-    $ kubectl log java-opertor-ex-<sha>
-    __  ____  __  _____   ___  __ ____  ______
-     --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
-     -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
-    --\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
-    2023-07-19 20:19:22,291 INFO  [io.qua.ope.run.ConfigurationServiceRecorder] (Quarkus Main Thread) Leader election deactivated because it is only activated for [prod] profiles. Currently active profiles: [dev]
+```bash
+$ kubectl log java-opertor-ex-<sha>
+__  ____  __  _____   ___  __ ____  ______
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/   
+2023-07-19 20:19:22,291 INFO  [io.qua.ope.run.ConfigurationServiceRecorder] (Quarkus Main Thread) Leader election deactivated because it is only activated for [prod] profiles. Currently active profiles: [dev]
 
 ****
 
-    # comment lines
-    2023-07-19 20:19:22,371 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) Starting 'gitopsreconciler' controller for reconciler: com.github.k8soperators.GitOpsReconciler, resource: com.github.k8soperators.GitOps
-    2023-07-19 20:19:22,793 WARN  [io.fab.kub.cli.dsl.int.VersionUsageUtils] (InformerWrapper [gitops.com.github.k8soperators/v1alpha1] 170) The client is using resource type 'gitops' with unstable version 'v1alpha1'
-    2023-07-19 20:19:23,173 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) 'gitopsreconciler' controller started
-    2023-07-19 20:19:23,211 INFO  [io.quarkus] (Quarkus Main Thread) java-operator-ex 0.0.1-SNAPSHOT on JVM (powered by Quarkus 3.1.2.Final) started in 4.423s. Listening on: http://localhost:8080
-    2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
-    2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, kubernetes, kubernetes-client, micrometer, openshift-client, operator-sdk, smallrye-context-propagation, smallrye-health, vertx]                 #A
+# comment lines
+2023-07-19 20:19:22,371 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) Starting 'gitopsreconciler' controller for reconciler: com.github.k8soperators.GitOpsReconciler, resource: com.github.k8soperators.GitOps
+2023-07-19 20:19:22,793 WARN  [io.fab.kub.cli.dsl.int.VersionUsageUtils] (InformerWrapper [gitops.com.github.k8soperators/v1alpha1] 170) The client is using resource type 'gitops' with unstable version 'v1alpha1'
+2023-07-19 20:19:23,173 INFO  [io.jav.ope.pro.Controller] (Controller Starter for: gitopsreconciler) 'gitopsreconciler' controller started
+2023-07-19 20:19:23,211 INFO  [io.quarkus] (Quarkus Main Thread) java-operator-ex 0.0.1-SNAPSHOT on JVM (powered by Quarkus 3.1.2.Final) started in 4.423s. Listening on: http://localhost:8080
+2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2023-07-19 20:19:23,214 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, kubernetes, kubernetes-client, micrometer, openshift-client, operator-sdk, smallrye-context-propagation, smallrye-health, vertx]                 #A
 
 ****
 ```
@@ -738,35 +748,37 @@ Finally, as our operator is now deployed, we can create a CR, which will give ou
 We can deploy the CR as shown in Listing 3.10 with the kubectl apply command with EOF and check the status as shown in Listing 3.11
 
 **Listing 3.10 Deploy the CR and check the status** 
-```
-    $ kubectl apply -f - <<EOF
-    ---
-    apiVersion: com.github.k8soperators/v1alpha1
-    kind: GitOps
-    metadata:
-      name: java-operator-ex-sample
-      namespace: java-operator-ex
-    spec:
-      url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
-    EOF
+```bash
+$ kubectl apply -f - <<EOF
+---
+apiVersion: com.github.k8soperators/v1alpha1
+kind: GitOps
+metadata:
+  name: java-operator-ex-sample
+  namespace: java-operator-ex
+spec:
+  url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
+EOF
 ```
 ****
 
 **Listing 3.11 Check the CR status**
 
 ****
+```bash
+$ kubectl get gitops gitops-sample -n gitops -oyaml | grep -A 10 “status:”   #A
 ```
-    $ kubectl get gitops gitops-sample -n gitops -oyaml | grep -A 10 “status:”   #A
-    status:
-      message: ""
-      phase: READY
-      resources:
-      - apiVersion: apps/v1
-     kind: Deployment
-     name: demo-app
-      - apiVersion: v1
-     kind: Service
-     name: demo-app
+```yaml
+status:
+  message: ""
+  phase: READY
+  resources:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: demo-app
+  - apiVersion: v1
+    kind: Service
+    name: demo-app
 ```
 ****
 
@@ -779,27 +791,27 @@ Finally, our operator has installed our deployment from our git directory, and w
 Although not part of deploying an operator, it is good practice to test your operator's functionality to ensure the operator functions as expected. We will update the deployment in the sample-yamls project https\://github.com/k8soperators/sample-yamls.git. After pulling it locally, we can edit the deployments replicas in the `kubernetes-quickstart/src/kubernetes/kind.yml `file. After we push the changes, we will see the number of pods increase to 2, and we will see the metadata generation increase, as shown in listing 3.12. This shows that the operator is acting on changes made in the GitHub repository. 
 
 **Listing 3.12 Clone the sample-yamls project and update the deployment replicas** 
-```
-    $ git clone git@github.com:k8soperators/sample-yamls.git
-    $ cd sample-yamls/kubernetes-quickstart/src/kubernetes/
-    $ sed -i 's/replicas: .*/replicas: 2/' kind.yml                               #A
-    $ git add kind.yml
-    $ git commit -m “update replicas”
-    $ git push origin main
-```
-****
-```
-    $ kubectl get pods --namespace=gitops                                         #B
-    NAME                            READY   STATUS         RESTARTS    AGE
-    demo-app-54ccb85644-hmxkv       2/2 Running        2           1m
-    java-operator-ex-6cc4ffcffc-cvqpz 1/1 Running          1                47h
+```bash
+$ git clone git@github.com:k8soperators/sample-yamls.git
+$ cd sample-yamls/kubernetes-quickstart/src/kubernetes/
+$ sed -i 's/replicas: .*/replicas: 2/' kind.yml                               #A
+$ git add kind.yml
+$ git commit -m “update replicas”
+$ git push origin main
 ```
 ****
+```bash
+$ kubectl get pods --namespace=gitops                                         #B
+NAME                            READY   STATUS         RESTARTS    AGE
+demo-app-54ccb85644-hmxkv       2/2 Running        2           1m
+java-operator-ex-6cc4ffcffc-cvqpz 1/1 Running          1                47h
 ```
-    $ kubectl get deployment demo-app -o=jsonpath='{.metadata.generation}'        #C
-    2 
-    $ kubectl get deployment demo-app -o=jsonpath='{.status.availableReplicas}'   #D
-    2
+****
+```bash
+$ kubectl get deployment demo-app -o=jsonpath='{.metadata.generation}'        #C
+2 
+$ kubectl get deployment demo-app -o=jsonpath='{.status.availableReplicas}'   #D
+2
 ```
 ****
 
@@ -855,16 +867,18 @@ Kubernetes API server authenticates a request from an operator by verifying the 
 ****
 
 **Listing 3.13  Service account for the operator** 
+```bash
+kubectl get serviceaccounts java-operator-ex -o yaml
 ```
-    kubectl get serviceaccounts java-operator-ex -o yaml
-    apiVersion: v1
-    kind: ServiceAccount 
-    metadata:
-      annotations:
-      labels:
-        app.kubernetes.io/managed-by: quarkus
-      name: java-operator-ex #A
-      namespace: default  #B
+```yaml
+apiVersion: v1
+kind: ServiceAccount 
+metadata:
+  annotations:
+  labels:
+    app.kubernetes.io/managed-by: quarkus
+  name: java-operator-ex #A
+  namespace: default  #B
 ```
 \#A Name of the service account. 
 
@@ -894,36 +908,36 @@ The Role consists of rules defined through three elements:
 For example, To create or modify the GitOps resource type, the service account of the GitOps operator will require permission to perform actions such as _get, list, watch, create, delete_, and _updat_e on the custom resource types: GitOps, GitOps/status. Let us define a Role for the GitOps operator as shown in Listing 3.14.
 
 **Listing 3.14  Role**
-```
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      name: gitopsreconciler-role #A
-      namespace: default  #B
-    rules:
-     - apiGroups:      
-         - "apiextensions.k8s.io"
-       resources:
-         # Required by the Java Operator SDK
-         - 'customresourcedefinitions'
-       verbs:  
-         - get
-         - list
-         - watch
-     - apiGroups: 
-         - com.github.k8soperators #C
-       resources: #D
-         - gitops
-         - gitops/status
-       verbs: #E
-         - get
-         - list
-         - watch
-         - create
-         - delete
-         - patch
-         - update
-    …
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: gitopsreconciler-role #A
+  namespace: default  #B
+rules:
+ - apiGroups:      
+     - "apiextensions.k8s.io"
+   resources:
+     # Required by the Java Operator SDK
+     - 'customresourcedefinitions'
+   verbs:  
+     - get
+     - list
+     - watch
+ - apiGroups: 
+     - com.github.k8soperators #C
+   resources: #D
+     - gitops
+     - gitops/status
+   verbs: #E
+     - get
+     - list
+     - watch
+     - create
+     - delete
+     - patch
+     - update
+…
 ```
 \#A Refers to the Role name.
 
@@ -943,19 +957,19 @@ RoleBinding links the operator service account with the Role to a namespace-scop
 Let’s define a RoleBinding for the GitOps operator in listing 3.15.
 
 **Listing 3.15  RoleBinding**
-```
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: gitopsreconciler-role
-      namespace: default
-    roleRef:
-      kind: Role #A
-      apiGroup: rbac.authorization.k8s.io
-      name: gitopsreconciler-role
-    Subjects: #B
-      - kind: ServiceAccount #C
-        name: java-operator-ex 
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: gitopsreconciler-role
+  namespace: default
+roleRef:
+  kind: Role #A
+  apiGroup: rbac.authorization.k8s.io
+  name: gitopsreconciler-role
+Subjects: #B
+  - kind: ServiceAccount #C
+    name: java-operator-ex 
 ```
 \#A Reference to the Role with the name `gitopsreconciler-role` shown in Listing 3.15 
 
@@ -979,34 +993,34 @@ We can examine the ClusterRole and ClusterRoleBinding for deploying the GitOps o
 ****
 
 **Listing 3.16  ClusterRole**
-```
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-     name: java-operator-ex #A
-    Rules: #B
-     - apiGroups:
-         - "apiextensions.k8s.io"
-       resources:
-         # Required by the Java Operator SDK
-         - 'customresourcedefinitions'
-       verbs:
-         - get
-         - list
-         - watch
-     - apiGroups:
-         - com.github.k8soperators
-       resources:
-         - gitops
-         - gitops/status
-       verbs:
-         - get
-         - list
-         - watch
-         - create
-         - delete
-         - patch
-         - update
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: java-operator-ex #A
+Rules: #B
+ - apiGroups:
+     - "apiextensions.k8s.io"
+   resources:
+     # Required by the Java Operator SDK
+     - 'customresourcedefinitions'
+   verbs:
+     - get
+     - list
+     - watch
+ - apiGroups:
+     - com.github.k8soperators
+   resources:
+     - gitops
+     - gitops/status
+   verbs:
+     - get
+     - list
+     - watch
+     - create
+     - delete
+     - patch
+     - update
 ```
 \#A Name of the ClusterRole, but no namespace declaration
 
@@ -1015,19 +1029,19 @@ We can examine the ClusterRole and ClusterRoleBinding for deploying the GitOps o
 Define a ClusterRoleBinding to bind service account with the ClusterRole.
 
 **Listing 3.17  ClusterRoleBinding**
-```
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-     name: java-operator-ex
-    roleRef:
-     kind: ClusterRole
-     apiGroup: rbac.authorization.k8s.io
-     name: java-operator-ex #A
-    subjects:
-     - kind: ServiceAccount #B
-       name: java-operator-ex
-       Namespace: gitops #C
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: java-operator-ex
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: java-operator-ex #A
+subjects:
+  - kind: ServiceAccount #B
+    name: java-operator-ex
+    Namespace: gitops    #C
 ```
 ****
 
@@ -1073,54 +1087,54 @@ Let’s try to create two namespaces, `gitops-demoapp` and `gitops-demoapp-secon
 ****
 
 **Listing 3.19 Deploy the sample CR in gitops-demoapp namespace** 
-```
-    $ kubectl create namespace gitops-demoapp
-    $ kubectl apply -f - <<EOF
-    ---
-    apiVersion: com.github.k8soperators/v1alpha1
-    kind: GitOps
-    metadata:
-      name: gitops-sample
-      namespace: gitops-demoapp
-    spec:
-      url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
-    EOF
+```bash
+$ kubectl create namespace gitops-demoapp
+$ kubectl apply -f - <<EOF
+---
+apiVersion: com.github.k8soperators/v1alpha1
+kind: GitOps
+metadata:
+  name: gitops-sample
+  namespace: gitops-demoapp
+spec:
+  url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
+EOF
 ```
 Let’s create another namespace with the name `gitops-demoapp-second` and a sample CR.
 
 **Listing 3.20 Deploy the CR and check the status** 
-```
-    $ kubectl create namespace gitops-demoapp-second
-    $ kubectl apply -f - <<EOF
-    ---
-    apiVersion: com.github.k8soperators/v1alpha1
-    kind: GitOps
-    metadata:
-      name: gitops-sample
-      namespace: gitops-demoapp-second
-    spec:
-      url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
-    EOF
+```bash
+$ kubectl create namespace gitops-demoapp-second
+$ kubectl apply -f - <<EOF
+---
+apiVersion: com.github.k8soperators/v1alpha1
+kind: GitOps
+metadata:
+  name: gitops-sample
+  namespace: gitops-demoapp-second
+spec:
+  url: "https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml"
+EOF
 ```
 We can check the two sample CRs created for the GitOps CRD type, as shown in Listing 3.21.
 
 **Listing 3.21  Get the deployment for all namespaces**
-```
-    $ kubectl get gitops.com.github.k8soperators --all-namespaces
-    NAMESPACE               NAME                   AGE
-    gitops-demoapp-second   gitops-sample-second   24m
-    gitops-demoapp          gitops-sample          26m
+```bash
+$ kubectl get gitops.com.github.k8soperators --all-namespaces
+NAMESPACE               NAME                   AGE
+gitops-demoapp-second   gitops-sample-second   24m
+gitops-demoapp          gitops-sample          26m
 ```
 Listing 3.22 shows the deployments of demo apps in the `gitops-demo` and `gitops-demo-second` namespaces by the gitops operator deployed in the default namespace. 
 
 ****
 
 **Listing 3.22  Get the deployment for all namespaces**
-```
-    $ kubectl get deployments.apps --all-namespaces
-    NAMESPACE               NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
-    default                 java-operator-ex         1/1     1            1           39m
-    gitops-demoapp-second   demo-app                 1/1     1            1           30m
+```bash
+$ kubectl get deployments.apps --all-namespaces
+NAMESPACE               NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+default                 java-operator-ex         1/1     1            1           39m
+gitops-demoapp-second   demo-app                 1/1     1            1           30m
 ```
 We looked into how to define permissions for the operator and how the operator observes resources in multiple namespaces. Next, we can review some common issues with the deployment of operators with the scopes. 
 
