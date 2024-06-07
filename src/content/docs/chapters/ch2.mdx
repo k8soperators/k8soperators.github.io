@@ -99,22 +99,24 @@ In Listing 2.1 is a sample 3scale ApiManger CR, which only has the basic setup f
 
 
 #### Listing 2.1 Sample APIManager CR
+```bash
+$ cat 3scale_CR.yaml
 ```
-    $ cat 3scale_CR.yaml
-    ---
-    apiVersion: apps.3scale.net/v1alpha1
-    kind: APIManager
-    metadata:
-      name: apimanager
-      namespace: 3scale-test
-    spec:
-      system:
-        fileStorage:
-          simpleStorageService:
-            configurationSecretRef:
-              name: secretname
-      wildcardDomain: some.domain.com 
-    EOF
+```yaml
+---
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: apimanager
+  namespace: 3scale-test
+spec:
+  system:
+    fileStorage:
+      simpleStorageService:
+        configurationSecretRef:
+          name: secretname
+  wildcardDomain: some.domain.com 
+EOF
 ```
 With this information, the 3scale Operator will trigger and create deployment configurations. These, in turn, will create Pods, secrets, config maps, deployments, services, routes, and persistent volumes for the databases, as shown at a high level in Figure 2.4. Finally, it makes sure all these components can communicate with each other.
 
@@ -181,24 +183,24 @@ Let's create a Postgres CR for the Cloud-Resources-Operator; we can do this with
 
 
 #### Listing 2.2 Cloud Resources  Operator  Sample Postgres CR
-```
-    $ kubectl apply -f - <<EOF
-    --- 
-    apiVersion: integreatly.org/v1alpha1 
-    kind: Postgres 
-    Metadata: 
-      name: example-postgres
-      Namespace: example-namespace
-      labels:
-     productName: productName
-    spec: 
-      secretRef:                  # A
-            name: secret-name
-            namespace: example-namespace
-      tier: development           # B
-      type: managed               # C
-      maintenanceWindow: false    # D 
-    EOF
+```bash
+$ kubectl apply -f - <<EOF
+--- 
+apiVersion: integreatly.org/v1alpha1 
+kind: Postgres 
+Metadata: 
+  name: example-postgres
+  Namespace: example-namespace
+  labels:
+    productName: productName
+spec: 
+  secretRef:                  # A
+        name: secret-name
+        namespace: example-namespace
+  tier: development           # B
+  type: managed               # C
+  maintenanceWindow: false    # D 
+EOF
 ```
 \#A _secretRef_ which is the name and namespace of where we want the Postgres connection and credentials stored.
 
@@ -212,19 +214,21 @@ The operator watches for an API kind defined by a CRD. An instance of one of tha
 
 
 #### Listing 2.3 Postgres CR after the Operator has finished acting upon it
+```bash
+$ kubectl get postgres example-postgres -n example-namespace -oyaml | grep -A 10 “status:”
 ```
-    $ kubectl get postgres example-postgres -n example-namespace -oyaml | grep -A 10 “status:”
-    status:  
-      message: >-              # A
-     rds instance aws-instance-name is as expected, aws
-     rds status is available
-      phase: complete          # B
-      provider: aws-rds        # C
-      secretRef:               # D
-     name: secret-name
-     namespace: example-namespace
-      strategy: aws            # E
-      version: '13.8'          # F
+```yaml
+status:  
+  message: >-              # A
+    rds instance aws-instance-name is as expected, aws
+    rds status is available
+  phase: complete          # B
+  provider: aws-rds        # C
+  secretRef:               # D
+    name: secret-name
+    namespace: example-namespace
+  strategy: aws            # E
+  version: '13.8'          # F
 ```
 \#A  _message_ gives us a message directly back from the AWS API with the ID of the cluster.
 
@@ -309,12 +313,12 @@ You can use any tool and framework suitable for the use case and your preferred 
 ### Generating operators in Java 
 
 The first step in generating an operator is to create an empty directory where the operator boilerplate will be placed. Create a directory with the name `java-operator-ex`.
-```
-    $ mkdir java-operator-ex
+```bash
+$ mkdir java-operator-ex
 ```
 Next, we use the Operator SDK with the Quarkus plugin to generate base boilerplate code for the GitOps Operator. The `domain` parameter can be thought of as a namespace and should be a well-formed domain name unique to you or your organization. In the case of the generated Java project, the `domain` will be reversed and used as the package name for the source code.
-```
-    $ operator-sdk init --plugins quarkus --domain k8soperators.github.com --project-name java-operator-ex
+```bash
+$ operator-sdk init --plugins quarkus --domain k8soperators.github.com --project-name java-operator-ex
 ```
 The java-opeator-ex code can be found at https\://github.com/k8soperators/examples/tree/main/code/java-operator-ex. 
 
@@ -323,7 +327,9 @@ The java-opeator-ex code can be found at https\://github.com/k8soperators/exampl
 
 Now, we can generate a scaffold for adding the Custom Resource Definition of kind `GitOps`. The `operator-sdk create api `command will generate the API schema in the preferred programming language based on the plugin type. The command takes Group, Version, and Kind (GVK) as input for the custom resource we want to add and generates the boilerplate code for the base API schema. Creating an API with an existing internal Kubernetes group, such as `apps` or` ​​admissionregistration.k8s.io` should be avoided.
 
-    $ operator-sdk create api --plugins quarkus --group com.github.k8soperators --version v1alpha1 --kind GitOps
+```bash
+$ operator-sdk create api --plugins quarkus --group com.github.k8soperators --version v1alpha1 --kind GitOps
+```
 
 The `operator-sdk create api` command will generate the boilerplate code for defining Spec and Status models for the GitOps object. We have seen in Chapter 1 about the Kubernetes Objects and top-level fields consisting of Spec and Status. You can add custom fields in the Spec and Status for the GitOps API schema. 
 
@@ -336,10 +342,10 @@ The two primary classes that must be defined are specification (spec) and status
 
 
 #### Listing 2.4 GitOps Java Specification Class 
-```
-    public class GitOpsSpec { #A
-        String url;  #B  
-    }
+```java
+public class GitOpsSpec { #A
+    String url; #B  
+}
 ```
 \#A Top-level class representing the model of the specification for the custom resource
 
@@ -349,23 +355,23 @@ For brevity, Listing 2.5 (and others) omit the typical Java getter and setter me
 
 
 #### Listing 2.5 GitOps Java Status Class 
-```
-    public class GitOpsStatus { #A
-        public enum Phase { #B 
-            UNKNOWN,
-            READY,
-            FAILED;
-        }
-        public static class GitOpsResource { #C
-            String apiVersion;
-            String kind;
-            String name;
-            // methods omitted
-        }
-        Phase phase;
-        String message;
-        Set<GitOpsResource> resources;  #D
-    }
+```java
+public class GitOpsStatus { #A
+    public enum Phase { #B 
+        UNKNOWN,
+        READY,
+        FAILED;
+    }
+    public static class GitOpsResource { #C
+        String apiVersion;
+        String kind;
+        String name;
+        // methods omitted
+    }
+    Phase phase;
+    String message;
+    Set<GitOpsResource> resources;  #D
+}
 ```
 \#A Top-level class representing the model of the status section of the custom resource 
 
@@ -381,14 +387,14 @@ Finally, these classes are assembled using a subclass of the generic Fabric8 `Cu
 
 
 #### Listing 2.6 GitOps Java CustomResource Classes
-```
-    @Group("com.github.k8soperators") #A
-    @Version("v1alpha1") #B
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class GitOps extends CustomResource<GitOpsSpec,GitOpsStatus> implements Namespaced #C 
-    {
-        private static final long serialVersionUID = 1L;
-    }
+```java
+@Group("com.github.k8soperators") #A
+@Version("v1alpha1") #B
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class GitOps extends CustomResource<GitOpsSpec,GitOpsStatus> implements Namespaced #C 
+{
+    private static final long serialVersionUID = 1L;
+}
 ```
 \#A API group for the custom resource definition
 
@@ -422,23 +428,23 @@ Before we define a CRD and CR for the GitOps Operator, we can look into how the 
 
 
 #### Listing 2.7 Custom Resource Definition API schema                                                                                       
-```
-    $ kubectl get --raw /apis/apiextensions.k8s.io/v1/ #A
-    {
-      "kind": "APIResourceList",
-      "apiVersion": "v1",
-      "groupVersion": "apiextensions.k8s.io/v1",
-      "resources": [{
-          "name": "customresourcedefinitions", #B
-          "singularName": "",
-          "namespaced": false, #C
-          "kind": "CustomResourceDefinition", #D
-          "verbs": [ #E
-            "create",
-            "delete",
-             …],
-          "shortNames": ["crd", "crds"],#F
-    }
+```bash
+$ kubectl get --raw /apis/apiextensions.k8s.io/v1/ #A
+{
+  "kind": "APIResourceList",
+  "apiVersion": "v1",
+  "groupVersion": "apiextensions.k8s.io/v1",
+  "resources": [{
+      "name": "customresourcedefinitions", #B
+      "singularName": "",
+      "namespaced": false, #C
+      "kind": "CustomResourceDefinition", #D
+      "verbs": [ #E
+        "create",
+        "delete",
+         …],
+      "shortNames": ["crd", "crds"],#F
+}
 ```
 \#A kubectl get command to fetch API extension group resources
 
@@ -458,52 +464,53 @@ First, we can review the CRD for our GitOps Operator, as shown in Listing 2.8.
 
 
 #### Listing 2.8 GitOps CRD      
+```bash
+cat gitops.com.github.k8soperators.v1.yml
 ```
-    cat gitops.com.github.k8soperators.v1.yml
-
-    apiVersion: apiextensions.k8s.io/v1
-    kind: CustomResourceDefinition    #A
-    metadata:
-      name: gitops.com.github.k8soperators     #B
-    spec:
-      group: com.github.k8soperators      #C
-      names:
-        kind: GitOps            #D
-        …
-      scope: Namespaced       #E
-      versions:
-      - name: v1alpha1            #F
-        schema:
-          openAPIV3Schema:
-            properties:
-              spec:                      #G
-                properties:
-                  url:                     #H
-                    type: string
-                type: object
-              status:                     #I
-                type: object
-                properties:
-                  phase:
-                    type: string
-                    enum:               #J
-                    - READY
-                    - UNKNOWN
-                    - FAILED
-                  message:
-                    type: string
-                  resources:             #K
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        apiVersion:
-                          type: string
-                        name:
-                          type: string
-                        kind:
-                          type: string
-    …
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition    #A
+metadata:
+  name: gitops.com.github.k8soperators     #B
+spec:
+  group: com.github.k8soperators      #C
+  names:
+    kind: GitOps            #D
+    …
+  scope: Namespaced       #E
+  versions:
+  - name: v1alpha1            #F
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:                      #G
+            properties:
+              url:                     #H
+                type: string
+            type: object
+          status:                     #I
+            type: object
+            properties:
+              phase:
+                type: string
+                enum:               #J
+                - READY
+                - UNKNOWN
+                - FAILED
+              message:
+                type: string
+              resources:             #K
+                type: array
+                items:
+                  type: object
+                  properties:
+                    apiVersion:
+                      type: string
+                    name:
+                      type: string
+                    kind:
+                      type: string
+…
 ```
 \#A Top level Kind represents the CRD type resource
 
@@ -530,31 +537,31 @@ First, we can review the CRD for our GitOps Operator, as shown in Listing 2.8.
 Adding the CRD will be similar to creating any native Kubernetes Resources. We can use the `kubectl `tool for creating the CRD.
 
 Create the GitOps CRD
-
-    $ kubectl apply -f sample_gitops.yaml 
-
+```bash
+$ kubectl apply -f sample_gitops.yaml 
+```
 The GitOps CRD is exposed as a Kubernetes API. Now GitOps has become an integral part of Kubernetes Resources, which means all allowed standard operations on the native resources can also be performed on the GitOps resources. For example, we can use the `kubectl get `operation on the GitOps Resources, as shown in Listing 2.9. 
 
 
 #### Listing 2.9 GitOps API 
-```
-    $ kubectl get --raw /apis/gitops.com.github.k8soperators/v1alpha1  
-    {
-      "kind": "APIResourceList",
-      "apiVersion": "v1",
-      "groupVersion": "gitops.com.github.k8soperators/v1alpha1", #A
-      "resources": [
-        {
-          "name": "gitops", #B
-          "singularName": "gitops",
-          "namespaced": true,
-          "kind": "GitOps", #C
-          "verbs": [ #D
-            "delete",
-            "get",
+```bash
+$ kubectl get --raw /apis/gitops.com.github.k8soperators/v1alpha1  
+{
+  "kind": "APIResourceList",
+  "apiVersion": "v1",
+  "groupVersion": "gitops.com.github.k8soperators/v1alpha1", #A
+  "resources": [
+    {
+      "name": "gitops", #B
+      "singularName": "gitops",
+      "namespaced": true,
+      "kind": "GitOps", #C
+      "verbs": [ #D
+        "delete",
+        "get",
     …
-          ],
-    }
+    ],
+}
 ```
 \#A API group for the GitOps resource type
 
@@ -576,16 +583,18 @@ We can review the created sample CR, as shown in Listing 2.10.
 
 
 #### Listing 2.10 Get the GitOps CR   
+```bash
+$ kubectl get gitops.com.github.k8soperators gitops-sample -o yaml
 ```
-    $ kubectl get gitops.com.github.k8soperators gitops-sample -o yaml
-    apiVersion: gitops.com.github.k8soperators/v1alpha1
-    kind: GitOps #A
-    metadata:
-     …
-      name: gitops-sample #B
-      namespace: default #C
-    spec:
-      url: https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml #D
+```yaml
+apiVersion: gitops.com.github.k8soperators/v1alpha1
+kind: GitOps #A
+metadata:
+  …
+  name: gitops-sample #B
+  namespace: default #C
+spec:
+  url: https://raw.githubusercontent.com/k8soperators/sample-yamls/main/kubernetes-quickstart/src/kubernetes/kind.yml #D
 ```
 \#A Kubernetes object type for the GitOps
 
@@ -613,20 +622,20 @@ To interact with the Kubernetes cluster, the reconcile method will also need acc
 
 
 #### Listing 2.11 Reconciler class and reconcile method 
-```
-    @ControllerConfiguration(namespaces = WATCH_CURRENT_NAMESPACE)
-    public class GitOpsReconciler implements Reconciler<GitOps> { # A
-        private final KubernetesClient client;                    # B
+```java
+@ControllerConfiguration(namespaces = WATCH_CURRENT_NAMESPACE)
+public class GitOpsReconciler implements Reconciler<GitOps> { # A
+    private final KubernetesClient client;                    # B
 
-        public GitOpsReconciler(KubernetesClient client) {
-           this.client = client;
-        }
+    public GitOpsReconciler(KubernetesClient client) {
+       this.client = client;
+    }
 
-        @Override
-        public UpdateControl<GitOps> reconcile(GitOps resource, Context<GitOps> context) { #C
-            …
-        }
-    }
+    @Override
+    public UpdateControl<GitOps> reconcile(GitOps resource, Context<GitOps> context) { #C
+        …
+    }
+}
 ```
 \#A GitOpsReconciler class that implements the Java Operator SDK’s Reconciler generic type. Indicates that instances of this class will operate on instances of the GitOps custom resource
 
@@ -638,25 +647,25 @@ Before we dive into the code of the `reconcile` method, we should consider what 
 
 
 #### Listing 2.12 Fetch the Resource via URL and apply resources 
-```
-    URL downloadURL = URI.create(resource.getSpec().getUrl()).toURL();
-    List<HasMetadata> desiredResources;
+```java
+URL downloadURL = URI.create(resource.getSpec().getUrl()).toURL();
+List<HasMetadata> desiredResources;
 
-    try (InputStream source = downloadURL.openStream()) {    # A
-        desiredResources = client.load(source)
-              .get()
-              .stream()
-              .map(res -> setOwner(res, resource))           # B
-              .collect(Collectors.toList());
-    }
-    Set<GitOpsResource> resources = desiredResources.stream()
-              .map(client::resource)
-              .map(Applicable::createOrReplace)
-              .map(rsrc -> new GitOpsResource(
-                      rsrc.getApiVersion(),
-                      rsrc.getKind(),
-                      rsrc.getMetadata().getName()))
-              .collect(Collectors.toCollection(LinkedHashSet<GitOpsResource>::new)); # C
+try (InputStream source = downloadURL.openStream()) {    # A
+    desiredResources = client.load(source)
+          .get()
+          .stream()
+          .map(res -> setOwner(res, resource))           # B
+          .collect(Collectors.toList());
+}
+Set<GitOpsResource> resources = desiredResources.stream()
+          .map(client::resource)
+          .map(Applicable::createOrReplace)
+          .map(rsrc -> new GitOpsResource(
+                  rsrc.getApiVersion(),
+                  rsrc.getKind(),
+                  rsrc.getMetadata().getName()))
+          .collect(Collectors.toCollection(LinkedHashSet<GitOpsResource>::new)); # C
 ```
 \#A Retrieve the data stream specified by the spec’s URL attribute
 
@@ -668,17 +677,17 @@ In Listing 2.12, the reconcile method invoked a `` `setOwner `` method for each 
 
 
 #### Listing 2.13 Setting the GitOps resource as owner on each resource 
-```
-    HasMetadata setOwner(HasMetadata resource, GitOps owner) {
-        resource.getMetadata()
-                .setOwnerReferences(List.of(new OwnerReferenceBuilder() #A
-                        .withKind(owner.getKind())
-                        .withApiVersion(owner.getApiVersion())
-                        .withName(owner.getMetadata().getName())
-                        .withUid(owner.getMetadata().getUid())
-                        .build()));
-        return resource;
-    }
+```java
+HasMetadata setOwner(HasMetadata resource, GitOps owner) {
+    resource.getMetadata()
+            .setOwnerReferences(List.of(new OwnerReferenceBuilder() #A
+                    .withKind(owner.getKind())
+                    .withApiVersion(owner.getApiVersion())
+                    .withName(owner.getMetadata().getName())
+                    .withUid(owner.getMetadata().getUid())
+                    .build()));
+    return resource;
+}
 ```
 \#A Set the owner of each resource to be the GitOps resource. This establishes a link between the two resources within Kubernetes
 
@@ -688,23 +697,23 @@ Finally, `reconcile` will return an `UpdateControl` object that wraps the GitOps
 
 
 #### Listing 2.14 Updating the GitOps resource status 
-```
-    @Override
-    public UpdateControl<GitOps> reconcile(GitOps resource, Context<GitOps> context) {
-        GitOpsStatus status = getOrCreateStatus(resource); #A
+```java
+@Override
+public UpdateControl<GitOps> reconcile(GitOps resource, Context<GitOps> context) {
+    GitOpsStatus status = getOrCreateStatus(resource); #A
 
-        try {
-            // Code to fetch data via URL, see listing 2.12 above
-            status.setPhase(GitOpsStatus.Phase.READY); #B
-            status.setMessage("");
-            status.setResources(resources);
-        } catch (IOException e) {
-            status.setPhase(GitOpsStatus.Phase.FAILED); #C
-            status.setMessage(e.getClass().getName() + ": " + e.getMessage());
-        }
+    try {
+        // Code to fetch data via URL, see listing 2.12 above
+        status.setPhase(GitOpsStatus.Phase.READY); #B
+        status.setMessage("");
+        status.setResources(resources);
+    } catch (IOException e) {
+        status.setPhase(GitOpsStatus.Phase.FAILED); #C
+        status.setMessage(e.getClass().getName() + ": " + e.getMessage());
+    }
 
-        return UpdateControl.patchStatus(resource);
-    }
+    return UpdateControl.patchStatus(resource);
+}
 ```
 \#A Retrieve the status object from the CR, or create it if none has yet been set
 
